@@ -1,23 +1,23 @@
 # backend/Dockerfile
-FROM python:3.9-slim
+FROM python:3.10-slim
 
-# Set environment variables
+# Define variáveis de ambiente
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
-# Set work directory
+# Define o diretório de trabalho
 WORKDIR /app
 
-# Install dependencies
+# Instala as dependências
 COPY requirements.txt .
 RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
 
-# Copy project
+# Copia o projeto
 COPY . .
 
-# Expose port
+# Exponha a porta
 EXPOSE 8000
 
-# Run the application
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+# Executa a aplicação
+CMD ["uvicorn", "main:app", "--port", "8000"]

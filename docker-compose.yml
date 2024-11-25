@@ -19,9 +19,7 @@
         container_name: frontend
         restart: always
         ports:
-          - "3000:5000"
-        volumes:
-          - ./frontend:/app
+          - "3000:3000"
         environment:
           - NODE_ENV=production
         depends_on:
