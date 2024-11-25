@@ -1,24 +1,38 @@
-import logo from './logo.svg';
-import './App.css';
+// frontend/src/App.js
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import UploadForm from './components/UploadForm';
+import Results from './components/Results';
+import EmbeddingPlot from './components/EmbeddingPlot';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <div className="min-h-screen bg-gray-50">
+        {/* Optional Header */}
+        <header className="bg-blue-600">
+          <div className="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
+            <h1 className="text-2xl font-bold text-white">CLIP Interactive Demo</h1>
+          </div>
+        </header>
+
+        {/* Main Content */}
+        <main className="py-10">
+          <Routes>
+            <Route path="/" element={<UploadForm />} />
+            <Route path="/results" element={<Results />} />
+            <Route path="/plot" element={<EmbeddingPlot />} />
+          </Routes>
+        </main>
+
+        {/* Optional Footer */}
+        <footer className="bg-gray-200">
+          <div className="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8 text-center text-gray-600">
+            &copy; {new Date().getFullYear()} Your Company. All rights reserved.
+          </div>
+        </footer>
+      </div>
+    </Router>
   );
 }
 
