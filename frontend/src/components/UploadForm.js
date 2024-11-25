@@ -7,7 +7,7 @@ import { CameraIcon, PlusIcon } from '@heroicons/react/solid';
 
 function UploadForm() {
   const [image, setImage] = useState(null);
-  const [texts, setTexts] = useState(['', '']);
+  const [texts, setTexts] = useState(['']);
   const [errors, setErrors] = useState({});
   const [isUploading, setIsUploading] = useState(false);
   const navigate = useNavigate();
@@ -35,25 +35,8 @@ function UploadForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    let validationErrors = {};
-
-    if (!image) {
-      validationErrors.image = "Please upload an image.";
-    }
-
-    texts.forEach((text, index) => {
-      if (!text.trim()) {
-        validationErrors[`text_${index}`] = "This field cannot be empty.";
-      }
-    });
-
-    if (Object.keys(validationErrors).length > 0) {
-      setErrors(validationErrors);
-      return;
-    }
-
-    setErrors({});
     setIsUploading(true);
+    setErrors({});
 
     const formData = new FormData();
     formData.append('image', image);
@@ -67,8 +50,8 @@ function UploadForm() {
       });
       navigate('/results', { state: { data: response.data } });
     } catch (error) {
-      console.error('Error processing:', error);
-      alert('There was an error processing your request.');
+      console.error(error);
+      setErrors({ submit: 'Erro ao processar a solicitação.' });
     } finally {
       setIsUploading(false);
     }

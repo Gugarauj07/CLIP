@@ -93,4 +93,5 @@ async def process(texts: str = Form(...), image: UploadFile = File(...)):
     # Ordenar resultados por probabilidade (maior para menor)
     results = sorted(results, key=lambda x: x["probability"], reverse=True)
 
+    # Retorne apenas os resultados
     return {"results": results}

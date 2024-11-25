@@ -3,7 +3,6 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import UploadForm from './components/UploadForm';
 import Results from './components/Results';
-import EmbeddingPlot from './components/EmbeddingPlot';
 
 function App() {
   return (
@@ -21,7 +20,6 @@ function App() {
           <Routes>
             <Route path="/" element={<UploadForm />} />
             <Route path="/results" element={<Results />} />
-            <Route path="/plot" element={<EmbeddingPlot />} />
           </Routes>
         </main>
 

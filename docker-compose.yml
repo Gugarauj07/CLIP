@@ -4,6 +4,8 @@
       backend:
         build:
           context: ./backend
+        container_name: backend
+        restart: always
         ports:
           - "8000:8000"
         volumes:
@@ -14,9 +16,13 @@
       frontend:
         build:
           context: ./frontend
+        container_name: frontend
+        restart: always
         ports:
-          - "3000:3000"
+          - "3000:5000"
+        volumes:
+          - ./frontend:/app
+        environment:
+          - NODE_ENV=production
         depends_on:
           - backend
-        environment:
-          - ENV=production
