@@ -3,6 +3,16 @@ import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Button from './Button';
 import { CheckCircleIcon } from '@heroicons/react/solid';
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+} from 'recharts';
 
 function Results() {
   const location = useLocation();
@@ -19,28 +29,51 @@ function Results() {
     );
   }
 
-  const { probabilities } = data;
+  const { results } = data;
+
+  // Preparar dados para o gráfico
+  const chartData = results.map((result) => ({
+    name: result.description,
+    Probability: (result.probability * 100).toFixed(2),
+  }));
 
   return (
-    <div className="max-w-2xl mx-auto mt-12 p-8 bg-white shadow-lg rounded-lg">
-      <h2 className="text-3xl font-bold mb-6 text-blue-600">Results</h2>
+    <div className="max-w-3xl mx-auto mt-12 p-8 bg-white shadow-lg rounded-lg">
+      <h2 className="text-3xl font-bold mb-6 text-blue-600">Resultados</h2>
       <div className="mb-6">
-        <h3 className="text-xl font-semibold mb-4">Probabilities</h3>
+        <h3 className="text-xl font-semibold mb-4">Probabilidades</h3>
         <ul className="space-y-2">
-          {probabilities.map((prob, index) => (
+          {results.map((result, index) => (
             <li key={index} className="flex justify-between items-center p-4 bg-gray-100 rounded-md">
-              <span className="font-medium">Description {index + 1}</span>
-              <span className="text-blue-600 font-semibold">{prob[0].toFixed(4)}</span>
+              <span className="font-medium">{result.description}</span>
+              <span className="text-blue-600 font-semibold">
+                {(result.probability * 100).toFixed(2)}%
+              </span>
             </li>
           ))}
         </ul>
       </div>
+
+      <div className="mb-6">
+        <h3 className="text-xl font-semibold mb-4">Visualização Gráfica</h3>
+        <ResponsiveContainer width="100%" height={300}>
+          <BarChart data={chartData}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="name" />
+            <YAxis domain={[0, 100]} />
+            <Tooltip />
+            <Legend />
+            <Bar dataKey="Probability" fill="#8884d8" />
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
+
       <div className="flex space-x-4">
         <Button onClick={() => navigate('/plot')} variant="secondary">
-          View Embedding Visualization
+          Visualizar Embedding
         </Button>
         <Button onClick={() => navigate('/')} variant="primary">
-          Process Another Image
+          Processar Outra Imagem
         </Button>
       </div>
     </div>
