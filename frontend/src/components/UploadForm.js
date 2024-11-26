@@ -43,7 +43,7 @@ function UploadForm() {
     formData.append('texts', JSON.stringify(texts));
 
     try {
-      const response = await axios.post('http://localhost:8000/process/', formData, {
+      const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/process/`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },

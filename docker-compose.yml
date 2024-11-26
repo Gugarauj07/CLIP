@@ -1,26 +1,27 @@
-    version: '3.8'
+version: '3.8'
 
-    services:
-      backend:
-        build:
-          context: ./backend
-        container_name: backend
-        restart: always
-        ports:
-          - "8000:8000"
-        volumes:
-          - ./backend:/app
-        environment:
-          - ENV=production
+services:
+  backend:
+    build:
+      context: ./backend
+    container_name: backend
+    restart: always
+    ports:
+      - "8000:8000"
+    environment:
+      - ENV=production
 
-      frontend:
-        build:
-          context: ./frontend
-        container_name: frontend
-        restart: always
-        ports:
-          - "3000:3000"
-        environment:
-          - NODE_ENV=production
-        depends_on:
-          - backend
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        - REACT_APP_BACKEND_URL=http://localhost:8000
+    container_name: frontend
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - REACT_APP_BACKEND_URL=http://localhost:8000
+    depends_on:
+      - backend

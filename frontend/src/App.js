@@ -26,7 +26,7 @@ function App() {
         {/* Optional Footer */}
         <footer className="bg-gray-200">
           <div className="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8 text-center text-gray-600">
-            &copy; {new Date().getFullYear()} Your Company. All rights reserved.
+            &copy; {new Date().getFullYear()} Top2. All rights reserved.
           </div>
         </footer>
       </div>

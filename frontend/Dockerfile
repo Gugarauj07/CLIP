@@ -1,25 +1,30 @@
 # frontend/Dockerfile
 FROM node:18-alpine
 
-# Set working directory
+# Definir o diretório de trabalho
 WORKDIR /app
 
-# Install dependencies
-COPY package.json ./
-COPY package-lock.json ./
+# Copiar os arquivos de dependência
+COPY package.json package-lock.json ./
+
+# Instalar as dependências
 RUN npm install
 
-# Copy project files
+# Copiar o restante do projeto
 COPY . .
 
-# Build the app
+# Definir o argumento de build para a URL do backend
+ARG REACT_APP_BACKEND_URL
+ENV REACT_APP_BACKEND_URL=${REACT_APP_BACKEND_URL}
+
+# Construir a aplicação
 RUN npm run build
 
-# Install serve to serve the build
+# Instalar o serve para servir os arquivos estáticos
 RUN npm install -g serve
 
-# Expose port
+# Expor a porta 3000
 EXPOSE 3000
 
-# Serve the build
+# Comando para servir a aplicação
 CMD ["serve", "-s", "build", "-l", "3000"]
