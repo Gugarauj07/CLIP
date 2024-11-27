@@ -40,13 +40,17 @@ function UploadForm() {
 
     const formData = new FormData();
     formData.append('image', image);
-    formData.append('texts', JSON.stringify(texts));
+    const cleanTexts = texts.filter(text => text.trim() !== '');
+    formData.append('texts', JSON.stringify(cleanTexts));
 
     try {
       const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/process/`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
+        timeout: 60000,
+        maxContentLength: Infinity,
+        maxBodyLength: Infinity,
       });
       navigate('/results', { state: { data: response.data } });
     } catch (error) {

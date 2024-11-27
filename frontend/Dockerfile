@@ -23,8 +23,7 @@ RUN npm run build
 # Instalar o serve para servir os arquivos estáticos
 RUN npm install -g serve
 
-# Expor a porta 3000
-EXPOSE 3000
+# Cloud Run vai definir a porta via PORT
+ENV PORT 8080
 
-# Comando para servir a aplicação
-CMD ["serve", "-s", "build", "-l", "3000"]
+CMD ["sh", "-c", "serve -s build -l $PORT"]

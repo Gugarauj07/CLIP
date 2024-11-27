@@ -26,7 +26,7 @@ app = FastAPI(
 # Configurar CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Atualize com origens específicas em produção
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -34,9 +34,10 @@ app.add_middleware(
 
 # Carregar modelo e processador CLIP
 logger.info("Loading CLIP model...")
-model = CLIPModel.from_pretrained("openai/clip-vit-large-patch14")
+device = "cuda" if torch.cuda.is_available() else "cpu"
+model = CLIPModel.from_pretrained("openai/clip-vit-large-patch14").to(device)
 processor = CLIPProcessor.from_pretrained("openai/clip-vit-large-patch14")
-logger.info("CLIP model loaded successfully.")
+logger.info(f"CLIP model loaded successfully on {device}")
 
 @app.post("/process/")
 async def process(texts: str = Form(...), image: UploadFile = File(...)):

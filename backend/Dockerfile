@@ -8,16 +8,22 @@ ENV PYTHONUNBUFFERED=1
 # Define o diretório de trabalho
 WORKDIR /app
 
-# Instala as dependências
-COPY requirements.txt .
-RUN pip install --upgrade pip
-RUN pip install -r requirements.txt
+# Instalar dependências do sistema necessárias
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    && rm -rf /var/lib/apt/lists/*
 
-# Copia o projeto
+# Copiar apenas requirements primeiro para aproveitar o cache
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Baixar o modelo CLIP durante a construção
+RUN python -c "from transformers import CLIPProcessor, CLIPModel; model = CLIPModel.from_pretrained('openai/clip-vit-large-patch14'); processor = CLIPProcessor.from_pretrained('openai/clip-vit-large-patch14')"
+
+# Copiar o resto do código
 COPY . .
 
-# Exponha a porta
-EXPOSE 8000
+# Cloud Run vai definir a porta via PORT
+ENV PORT 8080
 
-# Executa a aplicação
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["sh", "-c", "uvicorn main:app --host 0.0.0.0 --port $PORT"]
